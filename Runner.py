@@ -1,6 +1,6 @@
-import schedule
-import time
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+import time
 
 url = "https://ucf.libcal.com/reserve/generalstudyroom"
 
