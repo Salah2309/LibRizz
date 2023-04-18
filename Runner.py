@@ -7,8 +7,17 @@ url = "https://ucf.libcal.com/reserve/generalstudyroom"
 def main():
     driver = webdriver.Chrome()
     driver.get(url)
+    #time.sleep(10)
+    time.sleep(2)
+    driver.find_element("xpath", "//button[@class='fc-goToDate-button btn btn-default btn-sm' and @aria-label='Go To Date']").click()
+    time.sleep(3)
+    #<button class="fc-goToDate-button btn btn-default btn-sm" type="button" aria-label="Go To Date" data-original-title="" title=""><i class="fa fa-calendar" aria-class="hidden"></i> Go To Date</button>
+    l.click()
+    print(ran)
+    #driver.find_element("name", "fa fa-calendar").click()
+    #driver.find_element("data-date", "1678665600000").click()
     login(driver,'yourlogin','yourpassword')
-
+	
 
 def checkavailable(room, start_time, end_time):
 
@@ -31,7 +40,7 @@ def login(driver, username, password):
     except:
         print("Could Not Login!!!")
 
-
+main()
 #CHATGPT SAID:
 # def make_reservation():
 #     username = "your_username"
@@ -59,46 +68,3 @@ def login(driver, username, password):
 # while True:
 #     schedule.run_pending()
 #     time.sleep(1)
-
-# Github credentials
-username = "Username"
-password = "Password"
-
-# initialize the Chrome driver
-driver = webdriver.Chrome("chromedriver.exe")
-
-# head to github login page
-driver.get("https://ucf.libcal.com/reserve/generalstudyroom")
-html = driver.page_source
-time.sleep(3)
-#selecting date
-driver.find_element("class", "fc-goToDate-button btn btn-default btn-sm").click()
-#driver.find_element("data-date", "1678665600000").click()
-#driver.find_element("style", "top: 0px; left: 814px; right: -851px;").click()
-#driver.find_element("name", "submit_times").click()
-# find username/email field and send the username itself to the input field
-#driver.find_element("name", "UserName").send_keys(username)
-# find password input field and insert password as well
-#driver.find_element("name", "Password").send_keys(password)
-# click login button
-#driver.find_element("id", "submitButton").click()
-
-# wait the ready state to be complete
-WebDriverWait(driver=driver, timeout=10).until(
-    lambda x: x.execute_script("return document.readyState === 'complete'")
-)
-error_message = "Incorrect username or password."
-# get the errors (if there are)
-errors = driver.find_elements("css selector", ".flash-error")
-# print the errors optionally
-# for e in errors:
-#     print(e.text)
-# if we find that error message within errors, then login is failed
-if any(error_message in e.text for e in errors):
-    print("[!] Login failed")
-else:
-    print("[+] Login successful")
-    
-
-# close the driver
-driver.close()
