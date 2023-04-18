@@ -1,4 +1,3 @@
-
 import schedule
 import time
 from selenium import webdriver
@@ -9,7 +8,6 @@ def main():
     driver = webdriver.Chrome()
     driver.get(url)
     login(driver,'yourlogin','yourpassword')
-
 
 
 def checkavailable(room, start_time, end_time):
