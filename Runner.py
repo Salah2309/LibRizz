@@ -18,7 +18,10 @@ def main():
     driver.get(url)
     #time.sleep(10)
     #time.sleep(2)
-    gotoday(driver, (dt.datetime.now()+timedelta(days=8)).strftime("%d"))
+    reservation_date=dt.datetime.now()+timedelta(days=8)
+    gotoday(driver, reservation_date)
+   
+    reserve(driver, (reservation_date.strftime("%B %d, %Y")), 'aa','a', "b")
    # reserve(driver, "370", "12","1")
     #<button class="fc-goToDate-button btn btn-default btn-sm" type="button" aria-label="Go To Date" data-original-title="" title=""><i class="fa fa-calendar" aria-class="hidden"></i> Go To Date</button>
     #driver.find_element("name", "fa fa-calendar").click()
@@ -34,18 +37,18 @@ def checkavailable(room, start_time, end_time):
     return 0
 
 def gotoday(driver, day):
-
+	#setting time 0:0 in datetime 
+	epochdate = dt.datetime(int(day.strftime("%Y")), int(day.strftime("%m")), int(day.strftime("%d")), 0, 0, 0)
 	driver.find_element("xpath", "//button[@class='fc-goToDate-button btn btn-default btn-sm' and @aria-label='Go To Date']").click()
-	t=dt.datetime(2023, 4, 25, 0, 0, 0)
-	dvalue = calendar.timegm(t.timetuple())*1000
+	#converting datetime to epoch date
+	dvalue = calendar.timegm(epochdate.timetuple())*1000
 	driver.find_element("xpath", "//td[@data-date='"+ str(dvalue) +"']").click();
 	#time.sleep(3)
 	driver.implicitly_wait(4)
-	reserve(driver, "a",'a', "b")
-	
 	
 
-def reserve(driver, room, start_time, end_time):
+def reserve(driver, day, room, start_time, end_time):
+	#searches for room 
 	temp = driver.find_element("xpath", "//td[@class='fc-timeline-lane fc-resource' and @data-resource-id='eid_150798']//a[@title='7:30am Tuesday, April 25, 2023 - Room 370A - Available']//div[@class='fc-event-title fc-sticky']")
 	driver.execute_script("arguments[0].click();", temp)
 	time.sleep(7)
