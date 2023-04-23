@@ -29,7 +29,7 @@ def checkavailable(room, start_time, end_time):
 
 def gotoday(driver, day):
     driver.find_element("xpath","//button[@class='fc-goToDate-button btn btn-default btn-sm'and @aria-label='Go To Date']").click()
-    driver.find_element("xpath","//td[@data-date='1682121600000']").click()
+    driver.find_element("xpath","//td[@data-date=1681862400000]").click()
     return driver
 
 def date_to_unix_timestamp(date_string):
