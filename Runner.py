@@ -11,7 +11,7 @@ import pytz
 # AUTOMATE ROOM NUMBER ROTATION
 # LOOP FOR RESRERVE FUNCTION TO MAKE MULTIPLE RESERVATION
 
-reservation_date=dt.datetime.now()+timedelta(days=2)
+reservation_date=dt.datetime.now()+timedelta(days=8)
 
 url = "https://ucf.libcal.com/reserve/generalstudyroom"
 
@@ -36,7 +36,6 @@ def main():
 	
 def date_to_unix_timestamp(date):
     date_object = dt.datetime.strptime(date, '%Y-%m-%d').replace(tzinfo=pytz.timezone('GMT'))
-    print((int(date_object.timestamp())) *1000)
     return (int(date_object.timestamp())) *1000
 
 
@@ -49,10 +48,11 @@ def gotoday(driver):
 	#setting time 0:0 in datetime 
 	
 	driver.find_element("xpath", "//button[@class='fc-goToDate-button btn btn-default btn-sm' and @aria-label='Go To Date']").click()
-	if(driver.find_element("xpath","//th[@class='datepicker-switch'and @colspan='5']").text == reservation_date.strftime("%B %Y")):
-		print("works")
+	if(driver.find_element("xpath","//th[@class='datepicker-switch'and @colspan='5']").text != reservation_date.strftime("%B %Y")):
+		driver.find_element("xpath","//th[@class='next']").click()
+		print(driver.find_element("xpath","//th[@class='datepicker-switch'and @colspan='5']").text)
 	else:
-		print("dontwork")
+		print("Same Month no need to change")
 	
 	
 	driver.find_element("xpath", "//td[@data-date='"+ str(date_to_unix_timestamp(reservation_date.strftime("%Y-%m-%d"))) +"']").click();
