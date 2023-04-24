@@ -12,6 +12,8 @@ from datetime import timedelta
 # AUTOMATE ROOM NUMBER ROTATION
 # LOOP FOR RESRERVE FUNCTION TO MAKE MULTIPLE RESERVATION
 
+reservation_date = dt.datetime.now()+timedelta(days=2)
+
 url = "https://ucf.libcal.com/reserve/generalstudyroom"
 
 def main():
@@ -21,8 +23,8 @@ def main():
     driver1.get(url)
     #driver2.get(url)
     #driver3.get(url)
-    reservation_date = dt.datetime.now()+timedelta(days=8)
-    driver1 = gotoday(driver1,(reservation_date.strftime("%Y-%m-%d")))
+    
+    driver1 = gotoday(driver1)
     time.sleep(25)
 
 def checkavailable(room, start_time, end_time):
@@ -30,11 +32,15 @@ def checkavailable(room, start_time, end_time):
     return 0
 
 
-def gotoday(driver, day):
-    print(day)
-    driver.find_element("xpath","//button[@class='fc-goToDate-button btn btn-default btn-sm'and @aria-label='Go To Date']").click()
-    driver.find_element("xpath","//td[@data-date='"+str(date_to_unix_timestamp(day))+"']").click()
-    return driver
+def gotoday(driver):
+	if((driver.find_element("xpath","//th[@class='datepicker-switch'and @colspan='5']").text)==reservation_date.strftime("%B %Y")):
+		print("found")
+	else:
+		print("not found")
+	##<th colspan="5" class="datepicker-switch">April 2023</th>
+	driver.find_element("xpath","//button[@class='fc-goToDate-button btn btn-default btn-sm'and @aria-label='Go To Date']").click()
+	driver.find_element("xpath","//td[@data-date='"+str(date_to_unix_timestamp(reservation_date.strftime("%Y-%m-%d")))+"']").click()
+	return driver
 
 def date_to_unix_timestamp(date_string):
     date_object = datetime.datetime.strptime(date_string, '%Y-%m-%d').replace(tzinfo=pytz.timezone('GMT'))
