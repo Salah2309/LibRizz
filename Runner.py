@@ -11,7 +11,7 @@ import pytz
 # AUTOMATE ROOM NUMBER ROTATION
 # LOOP FOR RESRERVE FUNCTION TO MAKE MULTIPLE RESERVATION
 
-reservation_date=dt.datetime.now()+timedelta(days=8)
+reservation_date=dt.datetime.now()+timedelta(days=7)
 
 url = "https://ucf.libcal.com/reserve/generalstudyroom"
 
@@ -21,8 +21,9 @@ def main():
     driver.get(url)
     #driver1.get(url)
     gotoday(driver)
+    #start_time = 10:00 AM + timedelta(minutes=10)
     #gotoday(driver1, reservation_date)
-    reserve(driver, (reservation_date.strftime("%B %d, %Y")), 'aa','a', "b")
+    reserve(driver, (reservation_date.strftime("%A, %B %d, %Y")), 'aa','a', "b")
     #reserve(driver, (reservation_date.strftime("%B %d, %Y")), 'aa','a', "b")
    # reserve(driver, "370", "12","1")
     #<button class="fc-goToDate-button btn btn-default btn-sm" type="button" aria-label="Go To Date" data-original-title="" title=""><i class="fa fa-calendar" aria-class="hidden"></i> Go To Date</button>
@@ -36,6 +37,7 @@ def main():
 	
 def date_to_unix_timestamp(date):
     date_object = dt.datetime.strptime(date, '%Y-%m-%d').replace(tzinfo=pytz.timezone('GMT'))
+    #7:00am Monday, May 1, 2023 - Room 370A - Available
     return (int(date_object.timestamp())) *1000
 
 
@@ -53,8 +55,7 @@ def gotoday(driver):
 		print(driver.find_element("xpath","//th[@class='datepicker-switch'and @colspan='5']").text)
 	else:
 		print("Same Month no need to change")
-	
-	
+		
 	driver.find_element("xpath", "//td[@data-date='"+ str(date_to_unix_timestamp(reservation_date.strftime("%Y-%m-%d"))) +"']").click();
 	#time.sleep(3)
 	driver.implicitly_wait(4)
@@ -62,7 +63,7 @@ def gotoday(driver):
 
 def reserve(driver, day, room, start_time, end_time):
 	#searches for room 
-	temp = driver.find_element("xpath", "//td[@class='fc-timeline-lane fc-resource' and @data-resource-id='eid_150798']//a[@title='7:00am Wednesday, April 26, 2023 - Room 370A - Available']//div[@class='fc-event-title fc-sticky']")
+	temp = driver.find_element("xpath", "//td[@class='fc-timeline-lane fc-resource' and @data-resource-id='eid_150798']//a[@title='7:00am '"+day+"' - Room 370A - Available']//div[@class='fc-event-title fc-sticky']")
 	driver.execute_script("arguments[0].click();", temp)
 	time.sleep(7)
 	driver.find_element("xpath", "//button[@id='submit_times']").click()
