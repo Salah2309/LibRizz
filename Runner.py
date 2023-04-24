@@ -12,15 +12,18 @@ from datetime import timedelta
 # AUTOMATE ROOM NUMBER ROTATION
 # LOOP FOR RESRERVE FUNCTION TO MAKE MULTIPLE RESERVATION
 
-
 url = "https://ucf.libcal.com/reserve/generalstudyroom"
 
 def main():
-    driver = webdriver.Chrome()
-    driver.get(url)
-    driver = gotoday(driver,date_to_unix_timestamp('2023-04-18'))
+    driver1 = webdriver.Chrome()
+    #driver2 = webdriver.Chrome()
+    #driver3 = webdriver.Chrome()
+    driver1.get(url)
+    #driver2.get(url)
+    #driver3.get(url)
+    reservation_date=dt.datetime.now()+timedelta(days=2)
+    driver1 = gotoday(driver1,date_to_unix_timestamp((reservation_date.strftime("%Y-%m-%d"))))
     time.sleep(25)
-
 
 def checkavailable(room, start_time, end_time):
 	
@@ -29,7 +32,7 @@ def checkavailable(room, start_time, end_time):
 
 def gotoday(driver, day):
     driver.find_element("xpath","//button[@class='fc-goToDate-button btn btn-default btn-sm'and @aria-label='Go To Date']").click()
-    driver.find_element("xpath","//td[@data-date=1681862400000]").click()
+    driver.find_element("xpath","//td[@data-date='"+str(day)+"']").click()
     return driver
 
 def date_to_unix_timestamp(date_string):
