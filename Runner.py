@@ -21,8 +21,8 @@ def main():
     driver1.get(url)
     #driver2.get(url)
     #driver3.get(url)
-    reservation_date=dt.datetime.now()+timedelta(days=2)
-    driver1 = gotoday(driver1,date_to_unix_timestamp((reservation_date.strftime("%Y-%m-%d"))))
+    reservation_date = dt.datetime.now()+timedelta(days=8)
+    driver1 = gotoday(driver1,(reservation_date.strftime("%Y-%m-%d")))
     time.sleep(25)
 
 def checkavailable(room, start_time, end_time):
@@ -31,8 +31,9 @@ def checkavailable(room, start_time, end_time):
 
 
 def gotoday(driver, day):
+    print(day)
     driver.find_element("xpath","//button[@class='fc-goToDate-button btn btn-default btn-sm'and @aria-label='Go To Date']").click()
-    driver.find_element("xpath","//td[@data-date='"+str(day)+"']").click()
+    driver.find_element("xpath","//td[@data-date='"+str(date_to_unix_timestamp(day))+"']").click()
     return driver
 
 def date_to_unix_timestamp(date_string):
