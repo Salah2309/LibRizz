@@ -11,59 +11,58 @@ import pytz
 # AUTOMATE ROOM NUMBER ROTATION
 # LOOP FOR RESRERVE FUNCTION TO MAKE MULTIPLE RESERVATION
 
-reservation_date=dt.datetime.now()+timedelta(days=7)
+reservation_date=dt.datetime.now()+timedelta(days=1)
 
 url = "https://ucf.libcal.com/reserve/generalstudyroom"
 
 def main():
-    driver = webdriver.Chrome()
-    #driver1 = webdriver.Chrome()
-    driver.get(url)
-    #driver1.get(url)
-    gotoday(driver)
-    #start_time = 10:00 AM + timedelta(minutes=10)
-    #gotoday(driver1, reservation_date)
-    reserve(driver, (reservation_date.strftime("%A, %B %d, %Y")), 'aa','a', "b")
+    driver1 = webdriver.Chrome()
+    #driver2 = webdriver.Chrome()
+    #driver3 = webdriver.Chrome()
+
+    driver1.get(url)
+    #driver2.get(url)
+    #driver3.get(url)
+    
+    gotoday(driver1)
+    #gotoday(driver2)
+    #gotoday(driver3)
+
+
+    reserve(driver1, (reservation_date.strftime("%B %d, %Y")), 'aa','a', "b")
     #reserve(driver, (reservation_date.strftime("%B %d, %Y")), 'aa','a', "b")
-   # reserve(driver, "370", "12","1")
+
+
+    #reserve(driver, "370", "12","1")
     #<button class="fc-goToDate-button btn btn-default btn-sm" type="button" aria-label="Go To Date" data-original-title="" title=""><i class="fa fa-calendar" aria-class="hidden"></i> Go To Date</button>
     #driver.find_element("name", "fa fa-calendar").click()
     #driver.find_element("data-date", "1678665600000").click()
-    driver.implicitly_wait(90)
-    driver.implicitly_wait(90)
-    time.sleep(8)
     time.sleep(15)
 	
 	
 def date_to_unix_timestamp(date):
     date_object = dt.datetime.strptime(date, '%Y-%m-%d').replace(tzinfo=pytz.timezone('GMT'))
-    #7:00am Monday, May 1, 2023 - Room 370A - Available
     return (int(date_object.timestamp())) *1000
 
-
-def checkavailable(room, start_time, end_time):
-	
-
-    return 0
-
 def gotoday(driver):
-	#setting time 0:0 in datetime 
-	
 	driver.find_element("xpath", "//button[@class='fc-goToDate-button btn btn-default btn-sm' and @aria-label='Go To Date']").click()
 	if(driver.find_element("xpath","//th[@class='datepicker-switch'and @colspan='5']").text != reservation_date.strftime("%B %Y")):
 		driver.find_element("xpath","//th[@class='next']").click()
-		print(driver.find_element("xpath","//th[@class='datepicker-switch'and @colspan='5']").text)
-	else:
-		print("Same Month no need to change")
-		
+		print(driver.find_element("xpath","//th[@class='datepicker-switch'and @colspan='5']").text)	
 	driver.find_element("xpath", "//td[@data-date='"+ str(date_to_unix_timestamp(reservation_date.strftime("%Y-%m-%d"))) +"']").click();
-	#time.sleep(3)
-	driver.implicitly_wait(4)
 	
+
+def checkavailable(room, start_time, end_time):
+	
+    return 0
+
+def roomFinder(start_time, end_time):
+	
+    return 0
 
 def reserve(driver, day, room, start_time, end_time):
 	#searches for room 
-	temp = driver.find_element("xpath", "//td[@class='fc-timeline-lane fc-resource' and @data-resource-id='eid_150798']//a[@title='7:00am '"+day+"' - Room 370A - Available']//div[@class='fc-event-title fc-sticky']")
+	temp = driver.find_element("xpath", "//td[@class='fc-timeline-lane fc-resource' and @data-resource-id='eid_150798']//a[@title='7:00am Wednesday, April 26, 2023 - Room 370A - Available']//div[@class='fc-event-title fc-sticky']")
 	driver.execute_script("arguments[0].click();", temp)
 	time.sleep(7)
 	driver.find_element("xpath", "//button[@id='submit_times']").click()
@@ -81,15 +80,14 @@ def reserve(driver, day, room, start_time, end_time):
 	
 	
 def login(driver, username, password):
- 
-        username_field = driver.find_element("xpath", "//input[@id='userNameInput']")
-        username_field.send_keys(username)
-        password_field = driver.find_element("xpath", "//input[@id='passwordInput']")
-        password_field.send_keys(password)
-        sign_on_button = driver.find_element("xpath", "//span[@id='submitButton']")
-        sign_on_button.click()
-        time.sleep(5)
-        print("tried ")
-   
+    username_field = driver.find_element("xpath", "//input[@id='userNameInput']")
+    username_field.send_keys(username)
+    password_field = driver.find_element("xpath", "//input[@id='passwordInput']")
+    password_field.send_keys(password)
+    sign_on_button = driver.find_element("xpath", "//span[@id='submitButton']")
+    sign_on_button.click()
+    time.sleep(5)
+    print("tried ")
+
 
 main()
